@@ -21,9 +21,11 @@ class CurrencyViewModel(
         currencyRepository = CurrencyRepository(apiService)
     }
 
-
     private val _exchangeRates = MutableLiveData<Resource<List<ExchangeRate>>>()
     val exchangeRates: LiveData<Resource<List<ExchangeRate>>> get() = _exchangeRates
+
+    private val _conversionResult = MutableLiveData<Double>()
+    val conversionResult: LiveData<Double> get() = _conversionResult
 
     fun fetchExchangeRates() {
         viewModelScope.launch {
@@ -54,9 +56,11 @@ class CurrencyViewModel(
             }
         }
     }
-//
-//    fun convertCurrency(amount: Double, targetCurrency: String): Double {
-//        val rates = (_exchangeRates.value as? Resource.Success)?.data?.rates ?: return 0.0
-//        return CurrencyConverter.convert(amount, rates, targetCurrency)
-//    }
+
+    fun convertCurrency(amount: Double, from: String, to: String) {
+        viewModelScope.launch {
+            val result = currencyRepository.convertCurrencyOnline(from, to, amount)
+            _conversionResult.value = result.data?.result
+        }
+    }
 }
