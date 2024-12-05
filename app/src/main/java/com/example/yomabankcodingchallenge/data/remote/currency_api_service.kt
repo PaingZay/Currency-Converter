@@ -24,7 +24,7 @@ interface CurrencyApiService {
             @Query("from") from: String,
             @Query("to") to: String,
             @Query("amount") amount: Double,
-            @Query("format") format: Int = 1 // Optional parameter
+            @Query("format") format: Int = 1
         ): CurrencyConversionResponse
 
 }

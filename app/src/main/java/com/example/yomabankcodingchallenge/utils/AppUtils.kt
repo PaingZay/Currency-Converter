@@ -1,6 +1,6 @@
 object Constants {
     const val BASE_URL = "https://api.currencylayer.com/"
-    const val API_KEY = "498cbcb29ee661e652a4bda266a3d4d4"
+    const val API_KEY = "d54c3f0052727df96a6685a798bda54f"
 }
 
 sealed class Resource<T>(

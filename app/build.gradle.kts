@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -50,6 +51,14 @@ android {
 }
 
 dependencies {
+
+    val roomVersion = "2.6.0"
+
+    implementation(libs.androidx.room.runtime.v260)
+    annotationProcessor(libs.room.compiler.v260)
+    implementation(libs.androidx.room.ktx.v260)
+    ksp("androidx.room:room-compiler:2.5.0")
+
     implementation(libs.logging.interceptor)
     implementation(libs.retrofit)
     implementation (libs.converter.gson)
@@ -63,7 +72,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.recyclerview)
-    implementation(libs.androidx.room.ktx)
+//    implementation(libs.androidx.room.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
