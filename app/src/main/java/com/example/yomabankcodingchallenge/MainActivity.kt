@@ -4,6 +4,7 @@ import CurrencyViewModel
 import CurrencyViewModelFactory
 import ExchangeRateAdapter
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -25,6 +26,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.yomabankcodingchallenge.data.database.AppDatabase
 import com.example.yomabankcodingchallenge.data.model.CurrencyData
 import kotlinx.coroutines.launch
+import org.w3c.dom.Text
+import java.sql.Date
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
     private lateinit var amountEditText: EditText
@@ -32,9 +37,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: ExchangeRateAdapter
     private lateinit var convertButton: Button
     private lateinit var resultTextView: TextView
+    private lateinit var exchangeRatesLabel: TextView
     private lateinit var fromCurrencySpinner: Spinner
     private lateinit var toCurrencySpinner: Spinner
     private lateinit var loadingProgressBar: ProgressBar
+    private lateinit var conversionTimestampLabel: TextView
 
     // Use the by viewModels() delegate to initialize the ViewModel
     //private val viewModel: CurrencyViewModel by viewModels()
@@ -55,6 +62,8 @@ class MainActivity : AppCompatActivity() {
         toCurrencySpinner = findViewById<Spinner>(R.id.convertToSpinner)
         amountEditText = findViewById<EditText>(R.id.inputAmount)
         loadingProgressBar = findViewById(R.id.loadingProgressBar)
+        exchangeRatesLabel = findViewById<TextView>(R.id.currencyExchangeRateLabel)
+        conversionTimestampLabel = findViewById<TextView>(R.id.convertTimestamp)
 
 
         //BindData to Spinner.......................................
@@ -72,6 +81,8 @@ class MainActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val selectedCurrency = currencyCodes[position]
                 amountEditText.hint = "Enter amount in $selectedCurrency"
+                exchangeRatesLabel.text = "$selectedCurrency Exchange Rates"
+                viewModel.getExchangeRate(selectedCurrency)
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
                 amountEditText.hint = "Enter amount"
@@ -109,13 +120,25 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.conversionResult.observe(this, Observer { result ->
+//        viewModel.
+
+        viewModel.conversionTimestamp.observe(this, Observer { timestamp ->
+            timestamp?.let {
+                val date = Date(it * 1000)
+                val dateFormat = SimpleDateFormat("MMMM d, yyyy, h:mm a", Locale.getDefault())
+                val formattedDate = dateFormat.format(date)
+                conversionTimestampLabel.text = "$formattedDate"
+            }
+        })
+
+        viewModel.conversionTimestamp.observe(this, Observer { result ->
             if (result != null) {
                 resultTextView.text = "$result"
             } else {
                 Toast.makeText(this, "Conversion Failed", Toast.LENGTH_SHORT).show()
             }
         })
+
 
         viewModel.isLoading.observe(this, Observer { isLoading ->
             convertButton.isEnabled = !isLoading // Disable button while loading
@@ -127,6 +150,26 @@ class MainActivity : AppCompatActivity() {
                 convertButton.isEnabled = true
             }
         })
+
+//        Exchange Section .......................................
+        viewModel.exchangeRates.observe(this) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                }
+                is Resource.Success -> {
+                    resource.data?.let { exchangeRates ->
+                        adapter = ExchangeRateAdapter(exchangeRates)
+                        ratesRecyclerView.adapter = adapter
+                    }
+                }
+                is Resource.Error -> {
+                    //
+                }
+                else -> {}
+            }
+        }
+
+//        viewModel.fetchExchangeRates()
 
         //Exchange Section .......................................
 //        viewModel.exchangeRates.observe(this) { resource ->
@@ -146,28 +189,7 @@ class MainActivity : AppCompatActivity() {
 //                else -> {}
 //            }
 //        }
-//
-//        viewModel.fetchExchangeRates()
 
-        //Exchange Section .......................................
-        viewModel.exchangeRates.observe(this) { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    // Show loading indicator
-                }
-                is Resource.Success -> {
-                    resource.data?.let { exchangeRates ->
-                        adapter = ExchangeRateAdapter(exchangeRates)
-                        ratesRecyclerView.adapter = adapter
-                    }
-                }
-                is Resource.Error -> {
-                    //
-                }
-                else -> {}
-            }
-        }
-
-        viewModel.loadExchangeRates()
+//        viewModel.loadExchangeRates()
     }
 }

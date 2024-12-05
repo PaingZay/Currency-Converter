@@ -25,8 +25,11 @@ class ExchangeRateAdapter(private val exchangeRates: List<ExchangeRate>) : Recyc
         for (exchangeRate in exchangeRates) {
             if (currentPosition < exchangeRate.quotes.size) {
                 val quoteEntry = exchangeRate.quotes.entries.elementAt(currentPosition)
-                holder.currencyTextView.text = quoteEntry.key
-                holder.rateTextView.text = quoteEntry.value.toString()
+                val key = quoteEntry.key
+                val fromCurrency = key.substring(0, 3)
+                val toCurrency = key.substring(key.length - 3)
+                val amount = quoteEntry.value.toString()
+                holder.currencyTextView.text = "$fromCurrency = $amount $toCurrency"
                 return
             }
             currentPosition -= exchangeRate.quotes.size
