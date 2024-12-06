@@ -28,31 +28,12 @@ class CurrencyViewModel(private val context: Context
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
-    private val _timeAgo = MutableLiveData<String>()
-    val timeAgo: LiveData<String> get() = _timeAgo
-
-    private fun getTimeAgo(timestamp: Long): String {
-        val currentTime = System.currentTimeMillis()
-        val diffInMillis = currentTime - timestamp
-
-        val seconds = TimeUnit.MILLISECONDS.toSeconds(diffInMillis)
-        val minutes = TimeUnit.MILLISECONDS.toMinutes(diffInMillis)
-        val hours = TimeUnit.MILLISECONDS.toHours(diffInMillis)
-        val days = TimeUnit.MILLISECONDS.toDays(diffInMillis)
-
-        return when {
-            seconds < 60 -> "$seconds sec ago"
-            minutes < 60 -> "$minutes min ago"
-            hours < 24 -> "$hours hr ago"
-            else -> "$days days ago"
-        }
-    }
 
     fun getExchangeRate(source: String) {
         viewModelScope.launch {
             val localExchangeRates = db.exchangeRateDao().getExchangeRatesBySource(source)
 
-            _timeAgo.value = getTimeAgo(localExchangeRates.first().timestamp)
+
 
             if (localExchangeRates.isNotEmpty()) {
                 _exchangeRates.value = Resource.Success(localExchangeRates)
