@@ -83,6 +83,7 @@ class MainActivity : AppCompatActivity() {
                 amountEditText.hint = "Enter amount in $selectedCurrency"
                 exchangeRatesLabel.text = "$selectedCurrency Exchange Rates"
                 viewModel.getExchangeRate(selectedCurrency)
+                viewModel.refreshExchangeRates(selectedCurrency)
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
                 amountEditText.hint = "Enter amount"

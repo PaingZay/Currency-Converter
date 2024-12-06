@@ -20,7 +20,6 @@ class CurrencyViewModel(private val context: Context
     init {
         val apiService = RetrofitClient.createApiService()
         currencyRepository = CurrencyRepository(apiService)
-//        startPeriodicFetch()
     }
 
     private val _exchangeRates = MutableLiveData<Resource<List<ExchangeRate>>>()
@@ -38,26 +37,15 @@ class CurrencyViewModel(private val context: Context
     private val _remainingTime = MutableLiveData<Long>()
     val remainingTime: LiveData<Long> get() = _remainingTime
 
-    private var lastFetchTime: Long = 0
-    private val fetchInterval = 30 * 60 * 1000
 
     fun getExchangeRate(source: String) {
         viewModelScope.launch {
-            val currentTime = System.currentTimeMillis()
             val localExchangeRates = db.exchangeRateDao().getExchangeRatesBySource(source)
-
-            if (localExchangeRates.isEmpty() || (currentTime - lastFetchTime) >= fetchInterval) {
-                fetchExchangeRates(source)
-            } else {
+            if (localExchangeRates.isNotEmpty()) {
                 _exchangeRates.value = Resource.Success(localExchangeRates)
+            } else {
+                fetchExchangeRates(source)
             }
-        }
-    }
-
-    fun loadExchangeRates(source: String) {
-        viewModelScope.launch {
-            val localExchangeRates = db.exchangeRateDao().getExchangeRatesBySource(source)
-            _exchangeRates.value = Resource.Success(localExchangeRates)
         }
     }
 
@@ -84,6 +72,8 @@ class CurrencyViewModel(private val context: Context
                     db.exchangeRateDao().insertExchangeRates(exchangeRatesList)
                     _exchangeRates.value = Resource.Success(exchangeRatesList)
 
+                    triggerRefreshAfterDelay(source)
+
                 } else if (currencyResponseResource is Resource.Error) {
                     _exchangeRates.value = Resource.Error(currencyResponseResource.message ?: "Unknown error")
                 }
@@ -93,38 +83,26 @@ class CurrencyViewModel(private val context: Context
         }
     }
 
-//    private var periodicFetchJob: Job? = null
-//
-//    private fun startPeriodicFetch() {
-//        // Cancel any existing job to prevent multiple timers
-//        periodicFetchJob?.cancel()
-//
-//        periodicFetchJob = viewModelScope.launch {
-//            while (true) {
-//                val currentTime = System.currentTimeMillis()
-//                val timeSinceLastFetch = currentTime - lastFetchTimestamp
-//
-//                val remainingTimeMillis = refreshIntervalMillis - timeSinceLastFetch
-//
-//                if (remainingTimeMillis <= 0) {
-//                    // Time to refresh
-//                    _remainingTime.value = remainingTimeMillis
-//
-//                      // Exit the loop after fetching, a new job will be started
-//                } else {
-//                    fetchExchangeRates()
-//                    Log.d("CurrencyViewModel", "Remaining time: $remainingTimeMillis")
-//                }
-//
-//                delay(timerUpdateIntervalMillis)
-//            }
-//        }
-//    }
+    private fun triggerRefreshAfterDelay(source: String) {
+        viewModelScope.launch {
+            delay(30 * 60 * 1000)
+            refreshExchangeRates(source)
+        }
+    }
 
-//    override fun onCleared() {
-//        super.onCleared()
-//        periodicFetchJob?.cancel()
-//    }
+    fun refreshExchangeRates(source: String) {
+        viewModelScope.launch {
+            val localExchangeRates = db.exchangeRateDao().getExchangeRatesBySource(source)
+//            val localExchangeRates = db.exchangeRateDao().getAllExchangeRates()
+
+            if (localExchangeRates.isNotEmpty()) {
+                _exchangeRates.value = Resource.Success(localExchangeRates)
+                } else {
+                    fetchExchangeRates(source)
+                }
+            }
+    }
+
 
     fun convertCurrency(amount: Double, from: String, to: String) {
         viewModelScope.launch {

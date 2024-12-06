@@ -15,6 +15,6 @@ interface ExchangeRateDao {
     @Query("SELECT * FROM exchange_rates WHERE source = :source")
     suspend fun getExchangeRatesBySource(source: String): List<ExchangeRate>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertExchangeRates(exchangeRates: List<ExchangeRate>)
 }

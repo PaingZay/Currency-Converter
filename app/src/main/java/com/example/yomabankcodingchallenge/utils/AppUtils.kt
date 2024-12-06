@@ -1,6 +1,6 @@
 object Constants {
     const val BASE_URL = "https://api.currencylayer.com/"
-    const val API_KEY = "3451b2737b6f96ef2e4f09ef5156b402"
+    const val API_KEY = "1ad18a90d52eb421eff123fdbd367729"
 }
 
 sealed class Resource<T>(
@@ -10,15 +10,4 @@ sealed class Resource<T>(
     class Success<T>(data: T) : Resource<T>(data)
     class Loading<T> : Resource<T>()
     class Error<T>(message: String) : Resource<T>(message = message)
-}
-
-object CurrencyConverter {
-    fun convert(
-        amount: Double,
-        rates: Map<String, Double>,
-        targetCurrency: String
-    ): Double {
-        val usdRate = rates["USD$targetCurrency"] ?: 1.0
-        return amount * usdRate
-    }
 }
