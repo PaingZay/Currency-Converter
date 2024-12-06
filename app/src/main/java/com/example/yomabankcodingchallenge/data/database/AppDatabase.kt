@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import android.content.Context
 import com.example.yomabankcodingchallenge.data.model.ExchangeRate
+import com.example.yomabankcodingchallenge.utils.Converters
 
 @Database(entities = [ExchangeRate::class], version = 1)
 @TypeConverters(Converters::class) // Register the converters here

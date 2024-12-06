@@ -1,180 +1,202 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?><!--<LinearLayout-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:background="#FFFFFF"-->
+<!--    android:orientation="vertical"-->
+<!--    android:padding="16dp">-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical"-->
+<!--        android:padding="16dp">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_marginEnd="32dp">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="From: "-->
+<!--                android:textSize="16sp"-->
+<!--                android:layout_marginEnd="8dp"-->
+<!--                android:gravity="center_vertical"/>-->
+
+<!--            <Spinner-->
+<!--                android:id="@+id/convertFromSpinner"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                tools:ignore="TouchTargetSizeCheck" />-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_marginTop="16dp">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="8dp"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:text="To: "-->
+<!--                android:textSize="16sp" />-->
+
+<!--            <Spinner-->
+<!--                android:id="@+id/convertToSpinner"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                tools:ignore="TouchTargetSizeCheck" />-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:orientation="horizontal"-->
+<!--        tools:ignore="ExtraText">-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/inputAmount"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="6"-->
+<!--            android:hint="Enter amount in USD"-->
+<!--            android:inputType="numberDecimal"-->
+<!--            android:minHeight="48dp"-->
+<!--            android:background="@drawable/rounded_textbox"-->
+<!--            android:textSize="14sp"-->
+<!--            android:paddingLeft="16dp"-->
+<!--            android:padding="8dp" />-->
+
+<!--        <TextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text=" = "-->
+<!--            android:textSize="24sp"-->
+<!--            android:visibility="visible" />-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="6"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <EditText-->
+<!--                android:id="@+id/resultTextView"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/rounded_textbox"-->
+<!--                android:enabled="false"-->
+<!--                android:hint=""-->
+<!--                android:inputType="numberDecimal"-->
+<!--                android:minHeight="48dp"-->
+<!--                android:padding="8dp"-->
+<!--                android:paddingLeft="16dp"-->
+<!--                android:textSize="14sp"-->
+<!--                tools:ignore="SpeakableTextPresentCheck" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/convertTimestamp"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="end"-->
+<!--                android:layout_marginTop="4dp"-->
+<!--                android:text=""-->
+<!--                android:textSize="12sp"-->
+<!--                android:textColor="@android:color/black" />-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+
+<!--    <FrameLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="16dp">-->
+<!--        <Button-->
+<!--            android:id="@+id/convertButton"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@drawable/rounded_button"-->
+<!--            android:text="Convert"-->
+<!--            android:textColor="#FFFFFF" />-->
+
+<!--        <ProgressBar-->
+<!--            android:id="@+id/loadingProgressBar"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:visibility="gone" />-->
+<!--    </FrameLayout>-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_marginTop="16dp">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:padding="16dp">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/currencyExchangeRateLabel"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="USD Exchange Rates"-->
+<!--                android:textSize="18sp"-->
+<!--                android:textStyle="bold" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/timestamp"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Updated 1 minute ago"-->
+<!--                android:textSize="16sp"-->
+<!--                android:textColor="#808080" />-->
+<!--        </LinearLayout>-->
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/recyclerView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@drawable/rounded_list"-->
+<!--            android:padding="16dp" />-->
+<!--    </LinearLayout>-->
+<!--</LinearLayout>-->
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:layout_margin="0dp"
     android:orientation="vertical"
-    android:padding="16dp">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginEnd="32dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="From: "
-                android:textSize="16sp"
-                android:layout_marginEnd="8dp"
-                android:gravity="center_vertical"/>
-
-            <Spinner
-                android:id="@+id/convertFromSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:ignore="TouchTargetSizeCheck" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:gravity="center_vertical"
-                android:text="To: "
-                android:textSize="16sp" />
-
-            <Spinner
-                android:id="@+id/convertToSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:ignore="TouchTargetSizeCheck" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal"
-        tools:ignore="ExtraText">
-
-        <EditText
-            android:id="@+id/inputAmount"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="6"
-            android:hint="Enter amount in USD"
-            android:inputType="numberDecimal"
-            android:minHeight="48dp"
-            android:background="@drawable/rounded_textbox"
-            android:textSize="14sp"
-            android:paddingLeft="16dp"
-            android:padding="8dp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
-            android:layout_weight="1"
-            android:text=" = "
-            android:textSize="24sp"
-            android:visibility="visible" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="6"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/resultTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_textbox"
-                android:enabled="false"
-                android:hint=""
-                android:inputType="numberDecimal"
-                android:minHeight="48dp"
-                android:padding="8dp"
-                android:paddingLeft="16dp"
-                android:textSize="14sp"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-            <TextView
-                android:id="@+id/convertTimestamp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="4dp"
-                android:text=""
-                android:textSize="12sp"
-                android:textColor="@android:color/black" />
-        </LinearLayout>
-    </LinearLayout>
+    android:padding="0dp">
 
     <FrameLayout
+        android:id="@+id/fragment_container_currency_converter"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
-        <Button
-            android:id="@+id/convertButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_button"
-            android:text="Convert"
-            android:textColor="#FFFFFF" />
+        android:layout_height="0dp"
+        android:layout_margin="0dp"
+        android:layout_weight="1" /> <!-- Ensure no margin -->
 
-        <ProgressBar
-            android:id="@+id/loadingProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone" />
-    </FrameLayout>
-
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/fragment_container_exchange_rate"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="16dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp">
-
-            <TextView
-                android:id="@+id/currencyExchangeRateLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="USD Exchange Rates"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/timestamp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Updated 1 minute ago"
-                android:textSize="16sp"
-                android:textColor="#808080" />
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@drawable/rounded_list"
-            android:padding="16dp" />
-    </LinearLayout>
+        android:layout_height="0dp"
+        android:layout_margin="0dp"
+        android:layout_weight="1" /> <!-- Ensure no margin -->
 </LinearLayout>

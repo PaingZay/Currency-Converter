@@ -1,26 +1,20 @@
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.yomabankcodingchallenge.data.database.AppDatabase
 import com.example.yomabankcodingchallenge.data.model.ExchangeRate
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 class CurrencyViewModel(private val context: Context
 ) : ViewModel() {
 
     private val db = AppDatabase.getDatabase(context)
 
-    private val currencyRepository: CurrencyRepository
-
-    init {
-        val apiService = RetrofitClient.createApiService()
-        currencyRepository = CurrencyRepository(apiService)
-    }
+    private val currencyRepository: CurrencyRepository = CurrencyRepository(RetrofitClient.createApiService())
 
     private val _exchangeRates = MutableLiveData<Resource<List<ExchangeRate>>>()
     val exchangeRates: LiveData<Resource<List<ExchangeRate>>> get() = _exchangeRates
@@ -34,13 +28,32 @@ class CurrencyViewModel(private val context: Context
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
-    private val _remainingTime = MutableLiveData<Long>()
-    val remainingTime: LiveData<Long> get() = _remainingTime
+    private val _timeAgo = MutableLiveData<String>()
+    val timeAgo: LiveData<String> get() = _timeAgo
 
+    private fun getTimeAgo(timestamp: Long): String {
+        val currentTime = System.currentTimeMillis()
+        val diffInMillis = currentTime - timestamp
+
+        val seconds = TimeUnit.MILLISECONDS.toSeconds(diffInMillis)
+        val minutes = TimeUnit.MILLISECONDS.toMinutes(diffInMillis)
+        val hours = TimeUnit.MILLISECONDS.toHours(diffInMillis)
+        val days = TimeUnit.MILLISECONDS.toDays(diffInMillis)
+
+        return when {
+            seconds < 60 -> "$seconds sec ago"
+            minutes < 60 -> "$minutes min ago"
+            hours < 24 -> "$hours hr ago"
+            else -> "$days days ago"
+        }
+    }
 
     fun getExchangeRate(source: String) {
         viewModelScope.launch {
             val localExchangeRates = db.exchangeRateDao().getExchangeRatesBySource(source)
+
+            _timeAgo.value = getTimeAgo(localExchangeRates.first().timestamp)
+
             if (localExchangeRates.isNotEmpty()) {
                 _exchangeRates.value = Resource.Success(localExchangeRates)
             } else {
@@ -93,7 +106,6 @@ class CurrencyViewModel(private val context: Context
     fun refreshExchangeRates(source: String) {
         viewModelScope.launch {
             val localExchangeRates = db.exchangeRateDao().getExchangeRatesBySource(source)
-//            val localExchangeRates = db.exchangeRateDao().getAllExchangeRates()
 
             if (localExchangeRates.isNotEmpty()) {
                 _exchangeRates.value = Resource.Success(localExchangeRates)

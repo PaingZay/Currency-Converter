@@ -1,4 +1,4 @@
-package com.example.yomabankcodingchallenge.data.database
+package com.example.yomabankcodingchallenge.utils
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson

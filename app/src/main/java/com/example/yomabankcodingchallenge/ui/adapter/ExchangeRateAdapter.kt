@@ -29,7 +29,7 @@ class ExchangeRateAdapter(private val exchangeRates: List<ExchangeRate>) : Recyc
                 val fromCurrency = key.substring(0, 3)
                 val toCurrency = key.substring(key.length - 3)
                 val amount = quoteEntry.value.toString()
-                holder.currencyTextView.text = "$fromCurrency = $amount $toCurrency"
+                holder.currencyTextView.text = "1 $fromCurrency = $amount $toCurrency"
                 return
             }
             currentPosition -= exchangeRate.quotes.size
